@@ -3,7 +3,7 @@ use strum_macros::EnumString;
 /// All the land subtypes in Mtg.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[derive(EnumString)]
-#[strum(serialize_all = "snake_case")]
+#[strum(ascii_case_insensitive)]
 pub enum LandType {
     Plains,
     Island,

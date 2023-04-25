@@ -4,7 +4,7 @@ use strum_macros::EnumString;
 /// They are generally associated with a format for a single card.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[derive(EnumString)]
-#[strum(serialize_all = "snake_case")]
+#[strum(ascii_case_insensitive)]
 pub enum Legality {
     Legal,
     NotLegal,

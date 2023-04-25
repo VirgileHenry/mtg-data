@@ -2,7 +2,7 @@ use strum_macros::{EnumString, EnumIter};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[derive(EnumString, EnumIter)]
-#[strum(serialize_all = "snake_case")]
+#[strum(ascii_case_insensitive)]
 pub enum AbilityKeyword {
     Flying,
     Mentor

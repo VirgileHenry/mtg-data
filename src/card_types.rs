@@ -4,7 +4,7 @@ use strum_macros::EnumString;
 /// A card can have muliple type, a super type, multiple sub types.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[derive(EnumString)]
-#[strum(serialize_all = "snake_case")]
+#[strum(ascii_case_insensitive)]
 pub enum Type {
     Land,
     Creature,

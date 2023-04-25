@@ -4,7 +4,7 @@ use strum_macros::EnumString;
 /// As Planeswalker subtypes are their names, this is also a list of all Mtg planeswalker made in cards.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[derive(EnumString)]
-#[strum(serialize_all = "snake_case")]
+#[strum(ascii_case_insensitive)]
 pub enum PlaneswalkerType {
     Ajani,
     Aminatou,
