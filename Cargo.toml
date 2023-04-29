@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 strum = "0.24"
 strum_macros = "0.24"
+regex = "1"
+lazy_static = "1.4.0"
