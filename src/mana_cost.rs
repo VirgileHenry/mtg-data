@@ -59,11 +59,11 @@ impl Display for ManaCost {
             ManaCost::X => write!(f, "{{X}}"),
             ManaCost::Snow => write!(f, "{{S}}"),
             ManaCost::Any(n) => write!(f, "{{{n}}}"),
-            ManaCost::Colored(c) => write!(f, "{{{c}}}"),
-            ManaCost::Hybrid(c1, c2) => write!(f, "{{{c1}/{c2}}}"),
-            ManaCost::MonocoloredHybrid(n, c) => write!(f, "{{{n}/{c}}}"),
-            ManaCost::Phyrexian(c) => write!(f, "{{{c}/P}}"),
-            ManaCost::HybridPhyrexian(c1, c2) => write!(f, "{{{c1}/{c2}/P}}"),
+            ManaCost::Colored(c) => write!(f, "{{{c:?}}}"),
+            ManaCost::Hybrid(c1, c2) => write!(f, "{{{c1:?}/{c2:?}}}"),
+            ManaCost::MonocoloredHybrid(n, c) => write!(f, "{{{n}/{c:?}}}"),
+            ManaCost::Phyrexian(c) => write!(f, "{{{c:?}/P}}"),
+            ManaCost::HybridPhyrexian(c1, c2) => write!(f, "{{{c1:?}/{c2:?}/P}}"),
         }
     }
 }
