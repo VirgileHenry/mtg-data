@@ -1,0 +1,12 @@
+Aura
+Background
+Cartouche
+Case
+Class
+Curse
+Role
+Room
+Rune
+Saga
+Shard
+Shrine

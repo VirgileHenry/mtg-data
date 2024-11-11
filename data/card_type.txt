@@ -1,0 +1,17 @@
+Artifact
+Battle
+Conspiracy
+Creature
+Dungeon
+Emblem
+Enchantment
+Hero
+Instant
+Kindred
+Land
+Phenomenon
+Plane
+Planeswalker
+Scheme
+Sorcery
+Vanguard

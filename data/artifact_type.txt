@@ -1,0 +1,15 @@
+Attraction
+Blood
+Bobblehead
+Clue
+Contraption
+Equipment
+Food
+Fortification
+Gold
+Incubator
+Junk
+Map
+Powerstone
+Treasure
+Vehicle

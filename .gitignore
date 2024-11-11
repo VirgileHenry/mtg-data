@@ -1,1 +1,6 @@
 /target
+
+
+# my nixos stuff
+.envrc
+shell.nix

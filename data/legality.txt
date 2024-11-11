@@ -1,0 +1,4 @@
+Legal
+NotLegal
+Restricted
+Banned

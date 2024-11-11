@@ -1,0 +1,16 @@
+Cave
+Cloud
+Desert
+Forest
+Gate
+Island
+Lair
+Locus
+Mine
+Mountain
+Sphere
+Plains
+Power-Plant
+Swamp
+Tower
+Urza's
