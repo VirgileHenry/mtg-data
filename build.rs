@@ -14,6 +14,7 @@ fn sanitize(s: &str) -> Result<String, String> {
             '\'' => {}, // the 's case, simply skip and let add the s
             ' ' | '-' => start_of_word = true, // space like chars, back to start of word
             '.' => {}, // only one with this is B.O.B. afaik, so lets keep it as "Bob" in the enum (and not BOB)
+            '!' => {}, // There is the "For Mirrodin!" ability keyword that use the '!' char, skip it
             other => return Err(format!("Unhandled character in sanitizing process: '{other}'")),
         }
     }

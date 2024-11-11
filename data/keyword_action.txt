@@ -1,63 +1,63 @@
-Seek
+Abandon
 Activate
+Adapt
+Amass
+Assemble
 Attach
+Bolster
 Cast
+Clash
+Cloak
+Collect evidence
+Conjure
+Connive
+Convert
 Counter
 Create
 Destroy
+Detain
 Discard
+Discover
 Double
 Exchange
+Exert
 Exile
-Adapt
-Support
+Explore
+Fateseal
+Fight
+Food
+Forage
+Goad
+Incubate
+Investigate
+Learn
+Manifest
+Manifest dread
+Meld
+Mill
+Monstrosity
+Open an Attraction
+Planeswalk
 Play
+Plot
+Populate
+Proliferate
 Regenerate
 Reveal
-Sacrifice
-Shuffle
-Tap
-Untap
-Vote
-Time Travel
-Goad
-Transform
-Surveil
-Planeswalk
-Mill
-Learn
-Connive
-Venture into the dungeon
-Exert
-Open an Attraction
-Food
-Discover
-Abandon
-Explore
-Treasure
-Roll to Visit Your Attractions
-Set in motion
-Fateseal
-Manifest
-Populate
-Detain
-Investigate
-Monstrosity
-Clash
-Scry
-Incubate
-Proliferate
-Meld
-Convert
-Fight
-Bolster
-Assemble
-Conjure
-Amass
-Cloak
-Suspect
-Collect evidence
 Role token
-Plot
-Forage
-Manifest dread
+Roll to Visit Your Attractions
+Sacrifice
+Scry
+Seek
+Set in motion
+Shuffle
+Support
+Surveil
+Suspect
+Tap
+Time Travel
+Transform
+Treasure
+Untap
+Venture into the dungeon
+Vote

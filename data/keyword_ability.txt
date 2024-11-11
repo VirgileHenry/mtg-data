@@ -1,60 +1,202 @@
-Eerie
-Battalion
-Bloodrush
-Channel
-Chroma
-Cohort
-Constellation
-Converge
-Delirium
-Domain
-Fateful hour
-Ferocious
-Formidable
-Grandeur
-Hellbent
-Heroic
-Imprint
-Inspired
-Join forces
-Kinship
-Landfall
-Lieutenant
-Metalcraft
-Morbid
-Parley
-Radiance
-Raid
-Rally
-Spell mastery
-Strive
-Sweep
-Tempting offer
-Threshold
-Will of the council
-Adamant
-Addendum
-Council's dilemma
-Eminence
-Enrage
-Hero's Reward
-Kinfall
-Landship
-Legacy
-Revolt
-Underdog
-Undergrowth
-Descend
-Fathomless descent
-Magecraft
-Teamwork
-Pack tactics
-Coven
-Alliance
-Corrupted
-Secret council
-Celebration
-Paradox
-Will of the Planeswalkers
-Survival
-Valiant
+Absorb
+Affinity
+Afflict
+Afterlife
+Aftermath
+Amplify
+Annihilator
+Ascend
+Assist
+Augment
+Aura Swap
+Awaken
+Backup
+Banding
+Bargain
+Basic landcycling
+Battle Cry
+Bestow
+Blitz
+Bloodthirst
+Boast
+Bushido
+Buyback
+Cascade
+Casualty
+Champion
+Changeling
+Choose a background
+Cipher
+Cleave
+Commander ninjutsu
+Companion
+Compleated
+Conspire
+Convoke
+Craft
+Crew
+Cumulative upkeep
+Cycling
+Dash
+Daybound
+Deathtouch
+Decayed
+Defender
+Delve
+Demonstrate
+Desertwalk
+Dethrone
+Devoid
+Devour
+Disguise
+Disturb
+Doctor's companion
+Double agenda
+Double strike
+Dredge
+Echo
+Embalm
+Emerge
+Enchant
+Encore
+Enlist
+Entwine
+Epic
+Equip
+Escalate
+Escape
+Eternalize
+Evoke
+Evolve
+Exalted
+Exploit
+Extort
+Fabricate
+Fading
+Fear
+First strike
+Flanking
+Flash
+Flashback
+Flying
+For Mirrodin!
+Forecast
+Forestcycling
+Forestwalk
+Foretell
+Fortify
+Freerunning
+Frenzy
+Friends forever
+Fuse
+Gift
+Graft
+Gravestorm
+Haste
+Haunt
+Hexproof
+Hexproof from
+Hidden agenda
+Hideaway
+Horsemanship
+Impending
+Improvise
+Indestructible
+Infect
+Ingest
+Intensity
+Intimidate
+Islandcycling
+Islandwalk
+Jump-start
+Kicker
+Landcycling
+Landwalk
+Legendary landwalk
+Level Up
+Lifelink
+Living metal
+Living weapon
+Madness
+Megamorph
+Melee
+Menace
+Mentor
+Miracle
+Modular
+More Than Meets the Eye
+Morph
+Mountaincycling
+Mountainwalk
+Multikicker
+Mutate
+Myriad
+Nightbound
+Ninjutsu
+Nonbasic landwalk
+Offering
+Offspring
+Outlast
+Overload
+Partner
+Partner with
+Persist
+Phasing
+Plainscycling
+Plainswalk
+Poisonous
+Protection
+Prototype
+Provoke
+Prowess
+Prowl
+Rampage
+Ravenous
+Reach
+Read Ahead
+Rebound
+Reconfigure
+Recover
+Reinforce
+Renown
+Replicate
+Retrace
+Riot
+Ripple
+Saddle
+Scavenge
+Shadow
+Shroud
+Skulk
+Slivercycling
+Soulbond
+Soulshift
+Specialize
+Spectacle
+Splice
+Split second
+Spree
+Squad
+Storm
+Sunburst
+Surge
+Suspend
+Swampcycling
+Swampwalk
+Toxic
+Training
+Trample
+Transfigure
+Transmute
+Tribute
+Typecycling
+Umbra armor
+Undaunted
+Undying
+Unearth
+Unleash
+Vanishing
+Vigilance
+Ward
+Wither
+Wizardcycling

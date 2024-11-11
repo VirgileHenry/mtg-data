@@ -8,9 +8,9 @@ Lair
 Locus
 Mine
 Mountain
-Sphere
 Plains
 Power-Plant
+Sphere
 Swamp
 Tower
 Urza's

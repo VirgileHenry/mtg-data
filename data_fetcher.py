@@ -14,13 +14,17 @@
 import requests
 
 
-def fetch_and_save(url, target_file):
-    waith open(target_file, "w") as output:
+def fetch_and_save(target_file, url):
+    print("Fetching", url, "->", target_file)
+    with open(target_file, "w") as output:
         req = requests.get(url).json()
         if req["object"] == "error":
             raise Exception(f"Failed to fetch data, req returned {req}")
-        for format in req["data"]:
-            output.write(f"{format}\n")
+        lines = sorted(req["data"])
+        if req["total_values"] != len(lines):
+            raise Exception(f"Invalid value count, expected {req['total_values']} but found {len(lines)}")
+        for line in lines:
+            output.write(f"{line}\n")
 
 
 fetch_and_save("data/ability_word.txt",         "https://api.scryfall.com/catalog/ability-words")
@@ -29,7 +33,7 @@ fetch_and_save("data/battle_type.txt",          "https://api.scryfall.com/catalo
 fetch_and_save("data/card_type.txt",            "https://api.scryfall.com/catalog/card-types")
 fetch_and_save("data/creature_type.txt",        "https://api.scryfall.com/catalog/creature-types")
 fetch_and_save("data/enchantment_type.txt",     "https://api.scryfall.com/catalog/enchantment-types")
-fetch_and_save("data/keyword_ability.txt",      "https://api.scryfall.com/catalog/ability-words")
+fetch_and_save("data/keyword_ability.txt",      "https://api.scryfall.com/catalog/keyword-abilities")
 fetch_and_save("data/keyword_action.txt",       "https://api.scryfall.com/catalog/keyword-actions")
 fetch_and_save("data/land_type.txt",            "https://api.scryfall.com/catalog/land-types")
 fetch_and_save("data/planeswalker_type.txt",    "https://api.scryfall.com/catalog/planeswalker-types")

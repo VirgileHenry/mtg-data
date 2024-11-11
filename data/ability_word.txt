@@ -1,60 +1,60 @@
-Eerie
+Adamant
+Addendum
+Alliance
 Battalion
 Bloodrush
+Celebration
 Channel
 Chroma
 Cohort
 Constellation
 Converge
+Corrupted
+Council's dilemma
+Coven
 Delirium
+Descend
 Domain
+Eerie
+Eminence
+Enrage
 Fateful hour
+Fathomless descent
 Ferocious
 Formidable
 Grandeur
 Hellbent
+Hero's Reward
 Heroic
 Imprint
 Inspired
 Join forces
+Kinfall
 Kinship
 Landfall
+Landship
+Legacy
 Lieutenant
+Magecraft
 Metalcraft
 Morbid
+Pack tactics
+Paradox
 Parley
 Radiance
 Raid
 Rally
+Revolt
+Secret council
 Spell mastery
 Strive
+Survival
 Sweep
+Teamwork
 Tempting offer
 Threshold
-Will of the council
-Adamant
-Addendum
-Council's dilemma
-Eminence
-Enrage
-Hero's Reward
-Kinfall
-Landship
-Legacy
-Revolt
 Underdog
 Undergrowth
-Descend
-Fathomless descent
-Magecraft
-Teamwork
-Pack tactics
-Coven
-Alliance
-Corrupted
-Secret council
-Celebration
-Paradox
-Will of the Planeswalkers
-Survival
 Valiant
+Will of the Planeswalkers
+Will of the council
