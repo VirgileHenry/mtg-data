@@ -1,11 +1,10 @@
-use std::{str::FromStr, fmt::Display};
+use std::{fmt::Display, str::FromStr};
 
 use lazy_static::lazy_static;
 use regex::Regex;
 
-
 // const regex to match numbers
-lazy_static!{
+lazy_static! {
     static ref NUMBER_REGEX: Regex = Regex::new("[0-9]+").unwrap(); // ! fixme
 }
 
@@ -21,7 +20,11 @@ pub enum Mana {
     Snow,
 }
 
-/// This help building mana costs. 
+/*
+VHY Todo: this whole parsing could be rewritten more nicely
+*/
+
+/// This help building mana costs.
 /// The only real needed thing is the partial phyrexian, to help parse phyrexian mana costs easily.
 enum ManaCostBuildingTypes {
     X,
@@ -36,15 +39,15 @@ enum ManaCostBuildingTypes {
 }
 
 impl FromStr for Mana {
-    type Err = ();
+    type Err = String;
     fn from_str(from: &str) -> Result<Self, Self::Err> {
-        match Self::internal_parse_manacost(from).ok_or(())? {
+        match Self::internal_parse_manacost(from).ok_or(format!("Unknown Mana Cost: {}", from))? {
             ManaCostBuildingTypes::X => Ok(Mana::X),
             ManaCostBuildingTypes::Any(n) => Ok(Mana::Any(n)),
             ManaCostBuildingTypes::Colored(c) => Ok(Mana::Colored(c)),
             ManaCostBuildingTypes::Hybrid(c1, c2) => Ok(Mana::Hybrid(c1, c2)),
             ManaCostBuildingTypes::MonocoloredHybrid(n, c) => Ok(Mana::MonocoloredHybrid(n, c)),
-            ManaCostBuildingTypes::PartialPhyrexian => Err(()), // not a valid mana cost, only for building
+            ManaCostBuildingTypes::PartialPhyrexian => Err(format!("Unknown Mana Cost: {}", from)), // not a valid mana cost, only for building
             ManaCostBuildingTypes::Phyrexian(c) => Ok(Mana::Phyrexian(c)),
             ManaCostBuildingTypes::HybridPhyrexian(c1, c2) => Ok(Mana::HybridPhyrexian(c1, c2)),
             ManaCostBuildingTypes::Snow => Ok(Mana::Snow),
@@ -67,42 +70,50 @@ impl Display for Mana {
     }
 }
 
-
 impl Mana {
-
     /// Parse a mana cost knowing we already have a phyrexian type.
     fn internal_parse_manacost(from: &str) -> Option<ManaCostBuildingTypes> {
         // let's do something fully recursive : find any cost option separator ("/")
-        let (first, last) = from.split_at(match from.find("/") {
+        let split_index = match from.find("/") {
             Some(index) => index,
             None => {
                 // no separator here, parse it as number or letter
                 return match Self::internal_parse_numbered(from) {
                     Some(value) => Some(ManaCostBuildingTypes::Any(value)),
                     // this only check first letter, so we may discard info here
-                    None => Self::internal_parse_single_letter(from.chars().next()?.to_ascii_uppercase()),
-                }
-            },
-        });
+                    None => Self::internal_parse_single_letter(
+                        from.chars().next()?.to_ascii_uppercase(),
+                    ),
+                };
+            }
+        };
+        let (first, last) = from.split_at(split_index);
         // remove "/" from last
         let last = last.strip_prefix('/')?;
         // recursive call to get the mana cost of the first and last
-        match (Self::internal_parse_manacost(first)?, Self::internal_parse_manacost(last)?) {
+        match (
+            Self::internal_parse_manacost(first)?,
+            Self::internal_parse_manacost(last)?,
+        ) {
             // two colored mana give a hybrid mana cost
-            (ManaCostBuildingTypes::Colored(c1), ManaCostBuildingTypes::Colored(c2)) =>
-                Some(ManaCostBuildingTypes::Hybrid(c1, c2)),
+            (ManaCostBuildingTypes::Colored(c1), ManaCostBuildingTypes::Colored(c2)) => {
+                Some(ManaCostBuildingTypes::Hybrid(c1, c2))
+            }
             // an amount and color give monocolored hybrid mana (usually 2 and color)
-            (ManaCostBuildingTypes::Any(amount), ManaCostBuildingTypes::Colored(color)) |
-                (ManaCostBuildingTypes::Colored(color), ManaCostBuildingTypes::Any(amount)) =>
-                Some(ManaCostBuildingTypes::MonocoloredHybrid(amount, color)),
+            (ManaCostBuildingTypes::Any(amount), ManaCostBuildingTypes::Colored(color))
+            | (ManaCostBuildingTypes::Colored(color), ManaCostBuildingTypes::Any(amount)) => {
+                Some(ManaCostBuildingTypes::MonocoloredHybrid(amount, color))
+            }
             // a partial phyrexian and color gives a phyrexian
-            (ManaCostBuildingTypes::PartialPhyrexian, ManaCostBuildingTypes::Colored(color)) |
-                (ManaCostBuildingTypes::Colored(color), ManaCostBuildingTypes::PartialPhyrexian) =>
-                Some(ManaCostBuildingTypes::Phyrexian(color)),
+            (ManaCostBuildingTypes::PartialPhyrexian, ManaCostBuildingTypes::Colored(color))
+            | (ManaCostBuildingTypes::Colored(color), ManaCostBuildingTypes::PartialPhyrexian) => {
+                Some(ManaCostBuildingTypes::Phyrexian(color))
+            }
             // a phyrexian and a colored gives a hybrid phyrexian
-            (ManaCostBuildingTypes::Phyrexian(c1), ManaCostBuildingTypes::Colored(c2)) |
-                (ManaCostBuildingTypes::Colored(c1), ManaCostBuildingTypes::Phyrexian(c2)) =>
-                Some(ManaCostBuildingTypes::HybridPhyrexian(c1, c2)),
+            (ManaCostBuildingTypes::Phyrexian(c1), ManaCostBuildingTypes::Colored(c2))
+            | (ManaCostBuildingTypes::Colored(c1), ManaCostBuildingTypes::Phyrexian(c2)) => {
+                Some(ManaCostBuildingTypes::HybridPhyrexian(c1, c2))
+            }
             _ => None,
         }
     }
@@ -110,8 +121,7 @@ impl Mana {
     fn internal_parse_numbered(from: &str) -> Option<usize> {
         if NUMBER_REGEX.is_match(from) {
             from.parse().ok()
-        }
-        else {
+        } else {
             None
         }
     }
@@ -127,9 +137,7 @@ impl Mana {
             'X' => Some(ManaCostBuildingTypes::X),
             'S' => Some(ManaCostBuildingTypes::Snow),
             'P' => Some(ManaCostBuildingTypes::PartialPhyrexian),
-            _ => None // unknown
-        }
+            _ => None, // unknown
+        };
     }
-
 }
-

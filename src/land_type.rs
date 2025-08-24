@@ -11,15 +11,16 @@ pub enum LandType {
     Mine,
     Mountain,
     Plains,
+    Planet,
     PowerPlant,
     Sphere,
     Swamp,
     Tower,
+    Town,
     Urzas,
 }
-
 impl std::str::FromStr for LandType {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Cave" => Ok(Self::Cave),
@@ -33,41 +34,48 @@ impl std::str::FromStr for LandType {
             "Mine" => Ok(Self::Mine),
             "Mountain" => Ok(Self::Mountain),
             "Plains" => Ok(Self::Plains),
+            "Planet" => Ok(Self::Planet),
             "Power-Plant" => Ok(Self::PowerPlant),
             "Sphere" => Ok(Self::Sphere),
             "Swamp" => Ok(Self::Swamp),
             "Tower" => Ok(Self::Tower),
+            "Town" => Ok(Self::Town),
             "Urza's" => Ok(Self::Urzas),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown LandType: {}", other.to_string())),
         }
     }
 }
-
+impl LandType {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Cave => "Cave",
+            Self::Cloud => "Cloud",
+            Self::Desert => "Desert",
+            Self::Forest => "Forest",
+            Self::Gate => "Gate",
+            Self::Island => "Island",
+            Self::Lair => "Lair",
+            Self::Locus => "Locus",
+            Self::Mine => "Mine",
+            Self::Mountain => "Mountain",
+            Self::Plains => "Plains",
+            Self::Planet => "Planet",
+            Self::PowerPlant => "Power-Plant",
+            Self::Sphere => "Sphere",
+            Self::Swamp => "Swamp",
+            Self::Tower => "Tower",
+            Self::Town => "Town",
+            Self::Urzas => "Urza's",
+        }
+    }
+}
 impl std::fmt::Display for LandType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Cave => write!(f, "Cave"),
-            Self::Cloud => write!(f, "Cloud"),
-            Self::Desert => write!(f, "Desert"),
-            Self::Forest => write!(f, "Forest"),
-            Self::Gate => write!(f, "Gate"),
-            Self::Island => write!(f, "Island"),
-            Self::Lair => write!(f, "Lair"),
-            Self::Locus => write!(f, "Locus"),
-            Self::Mine => write!(f, "Mine"),
-            Self::Mountain => write!(f, "Mountain"),
-            Self::Plains => write!(f, "Plains"),
-            Self::PowerPlant => write!(f, "Power-Plant"),
-            Self::Sphere => write!(f, "Sphere"),
-            Self::Swamp => write!(f, "Swamp"),
-            Self::Tower => write!(f, "Tower"),
-            Self::Urzas => write!(f, "Urza's"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl LandType {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Cave,
             Self::Cloud,
@@ -80,11 +88,14 @@ impl LandType {
             Self::Mine,
             Self::Mountain,
             Self::Plains,
+            Self::Planet,
             Self::PowerPlant,
             Self::Sphere,
             Self::Swamp,
             Self::Tower,
+            Self::Town,
             Self::Urzas,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }

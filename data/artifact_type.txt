@@ -8,8 +8,11 @@ Food
 Fortification
 Gold
 Incubator
+Infinity
 Junk
 Map
 Powerstone
+Spacecraft
+Stone
 Treasure
 Vehicle

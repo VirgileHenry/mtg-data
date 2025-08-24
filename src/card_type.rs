@@ -18,9 +18,8 @@ pub enum CardType {
     Sorcery,
     Vanguard,
 }
-
 impl std::str::FromStr for CardType {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Artifact" => Ok(Self::Artifact),
@@ -40,37 +39,40 @@ impl std::str::FromStr for CardType {
             "Scheme" => Ok(Self::Scheme),
             "Sorcery" => Ok(Self::Sorcery),
             "Vanguard" => Ok(Self::Vanguard),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown CardType: {}", other.to_string())),
         }
     }
 }
-
+impl CardType {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Artifact => "Artifact",
+            Self::Battle => "Battle",
+            Self::Conspiracy => "Conspiracy",
+            Self::Creature => "Creature",
+            Self::Dungeon => "Dungeon",
+            Self::Emblem => "Emblem",
+            Self::Enchantment => "Enchantment",
+            Self::Hero => "Hero",
+            Self::Instant => "Instant",
+            Self::Kindred => "Kindred",
+            Self::Land => "Land",
+            Self::Phenomenon => "Phenomenon",
+            Self::Plane => "Plane",
+            Self::Planeswalker => "Planeswalker",
+            Self::Scheme => "Scheme",
+            Self::Sorcery => "Sorcery",
+            Self::Vanguard => "Vanguard",
+        }
+    }
+}
 impl std::fmt::Display for CardType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Artifact => write!(f, "Artifact"),
-            Self::Battle => write!(f, "Battle"),
-            Self::Conspiracy => write!(f, "Conspiracy"),
-            Self::Creature => write!(f, "Creature"),
-            Self::Dungeon => write!(f, "Dungeon"),
-            Self::Emblem => write!(f, "Emblem"),
-            Self::Enchantment => write!(f, "Enchantment"),
-            Self::Hero => write!(f, "Hero"),
-            Self::Instant => write!(f, "Instant"),
-            Self::Kindred => write!(f, "Kindred"),
-            Self::Land => write!(f, "Land"),
-            Self::Phenomenon => write!(f, "Phenomenon"),
-            Self::Plane => write!(f, "Plane"),
-            Self::Planeswalker => write!(f, "Planeswalker"),
-            Self::Scheme => write!(f, "Scheme"),
-            Self::Sorcery => write!(f, "Sorcery"),
-            Self::Vanguard => write!(f, "Vanguard"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl CardType {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Artifact,
             Self::Battle,
@@ -89,6 +91,7 @@ impl CardType {
             Self::Scheme,
             Self::Sorcery,
             Self::Vanguard,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }

@@ -4,6 +4,7 @@ Adapt
 Amass
 Assemble
 Attach
+Behold
 Bolster
 Cast
 Clash
@@ -19,6 +20,7 @@ Detain
 Discard
 Discover
 Double
+Endure
 Exchange
 Exert
 Exile
@@ -28,6 +30,7 @@ Fight
 Food
 Forage
 Goad
+Heist
 Incubate
 Investigate
 Learn

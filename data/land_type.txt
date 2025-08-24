@@ -9,8 +9,10 @@ Locus
 Mine
 Mountain
 Plains
+Planet
 Power-Plant
 Sphere
 Swamp
 Tower
+Town
 Urza's

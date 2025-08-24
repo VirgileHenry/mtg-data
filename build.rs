@@ -1,21 +1,24 @@
-
 fn sanitize(s: &str) -> Result<String, String> {
     let mut result = String::with_capacity(s.len());
     let mut start_of_word = true;
 
     for c in s.chars() {
         match c {
-            'a'..='z' | 'A'..='Z' => if start_of_word {
-                result.push(c.to_ascii_uppercase());
+            'a'..='z' | 'A'..='Z' => {
+                result.push(if start_of_word {
+                    c.to_ascii_uppercase()
+                } else {
+                    c.to_ascii_lowercase()
+                });
                 start_of_word = false;
-            } else {
-                result.push(c.to_ascii_lowercase());
-            },
-            '\'' => {}, // the 's case, simply skip and let add the s
-            ' ' | '-' => start_of_word = true, // space like chars, back to start of word
-            '.' => {}, // only one with this is B.O.B. afaik, so lets keep it as "Bob" in the enum (and not BOB)
-            '!' => {}, // There is the "For Mirrodin!" ability keyword that use the '!' char, skip it
-            other => return Err(format!("Unhandled character in sanitizing process: '{other}'")),
+            }
+            '\'' | '.' | '!' => {}
+            ' ' | '-' => start_of_word = true,
+            other => {
+                return Err(format!(
+                    "Unhandled character in sanitizing process: '{other}'"
+                ))
+            }
         }
     }
 
@@ -28,7 +31,7 @@ struct ToGenerateEnum<'a> {
     destination_file: &'a str,
 }
 
-const TO_GENERATE_ENUMS: [ToGenerateEnum::<'static>; 15] = [
+const TO_GENERATE_ENUMS: [ToGenerateEnum<'static>; 15] = [
     ToGenerateEnum {
         name: "AbilityWord",
         source_file: "data/ability_word.txt",
@@ -108,76 +111,94 @@ const TO_GENERATE_ENUMS: [ToGenerateEnum::<'static>; 15] = [
 
 impl<'a> ToGenerateEnum<'a> {
     fn generate(&self) -> Result<(), std::io::Error> {
-        
-        let source_file = std::fs::read_to_string(self.source_file)?;
-
-        let mut enum_decl = format!(
-            "#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]\npub enum {} {{\n",
-            self.name
-        );
-        let mut parse_func = format!(
-            "impl std::str::FromStr for {} {{\n    type Err = crate::ParsingError;\n    fn from_str(s: &str) -> Result<Self, Self::Err> {{\n        match s {{\n",
-            self.name
-        );
-        let mut display_func = format!(
-            "impl std::fmt::Display for {} {{\n    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {{\n        match &self {{\n",
-            self.name
-        );
-        let mut iter_func = format!(
-            "impl {} {{\n    pub fn iter() -> impl Iterator<Item = Self> {{\n        [\n",
-            self.name
-        );
-
-
-        for line in source_file.split('\n') {
-            
-            let line = line.trim();
-            if line.is_empty() {
-                continue; // skip
-            }
-
-            match sanitize(line) {
-                Ok(variant) => {
-                    enum_decl.push_str(&format!("    {},\n", variant));
-                    parse_func.push_str(&format!("            \"{}\" => Ok(Self::{}),\n", line, variant));
-                    display_func.push_str(&format!("            Self::{} => write!(f, \"{}\"),\n", variant, line));
-                    iter_func.push_str(&format!("            Self::{},\n", variant));
-                },
-                Err(e) => {
-                    // maybe we could simply skip ? But I prefer to fail the build with a hard error, to force us to handle all data
-                    return Err(std::io::Error::new(std::io::ErrorKind::Other, format!("Failed to sanitize input line: {e}")));
-                },
-            }
-        }
-
-        enum_decl.push_str("}\n");
-        parse_func.push_str("            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),\n        }\n    }\n}\n");
-        display_func.push_str("        }\n    }\n}\n");
-        iter_func.push_str("        ].into_iter()\n    }\n}\n");
-
         use std::io::Write;
-        let mut destination_file = std::fs::OpenOptions::new().create(true).write(true).open(self.destination_file)?;
-        
-        write!(destination_file, "{}\n{}\n{}\n{}", enum_decl, parse_func, display_func, iter_func)?;
-        
+
+        let source = std::fs::read_to_string(self.source_file)?;
+        let mut destination = std::fs::OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(self.destination_file)?;
+
+        // sanitize all lines in input file as enum ready tokens
+        let variants = source
+            .split('\n')
+            .map(|line| line.trim())
+            .filter(|line| !line.is_empty())
+            .map(|line| sanitize(line).map(|s| (line, s)))
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|e| std::io::Error::other(format!("Failed to sanitize input line: {e}")))?;
+
+        // Write out the enum
+        writeln!(
+            destination,
+            "#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]"
+        )?;
+        writeln!(destination, "pub enum {} {{", self.name)?;
+        for (_, variant) in variants.iter() {
+            writeln!(destination, "{},", variant)?;
+        }
+        writeln!(destination, "}}")?;
+
+        // write out the parse func
+        writeln!(destination, "impl std::str::FromStr for {} {{", self.name)?;
+        writeln!(destination, "type Err = String;")?;
+        writeln!(
+            destination,
+            "fn from_str(s: &str) -> Result<Self, Self::Err> {{"
+        )?;
+        writeln!(destination, "match s {{")?;
+        for (line, variant) in variants.iter() {
+            writeln!(destination, "\"{}\" => Ok(Self::{}),", line, variant)?;
+        }
+        writeln!(
+            destination,
+            "other => Err(format!(\"Unknown {}: {{}}\", other.to_string())),",
+            self.name
+        )?;
+        writeln!(destination, "}} }} }}")?;
+
+        // Write out the display funcs
+        writeln!(destination, "impl {} {{", self.name)?;
+        writeln!(destination, "fn as_str(&self) -> &'static str {{")?;
+        writeln!(destination, "match self {{")?;
+        for (line, variant) in variants.iter() {
+            writeln!(destination, "Self::{} =>\"{}\",", variant, line)?;
+        }
+        writeln!(destination, "}} }} }}")?;
+
+        writeln!(destination, "impl std::fmt::Display for {} {{", self.name)?;
+        writeln!(
+            destination,
+            "fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {{"
+        )?;
+        writeln!(destination, "write!(f, \"{{}}\", self.as_str())")?;
+        writeln!(destination, "}} }}")?;
+
+        // write the iter func
+        writeln!(destination, "impl {} {{", self.name)?;
+        writeln!(destination, "pub fn all() -> impl Iterator<Item = Self> {{")?;
+        writeln!(destination, "[")?;
+        for (_, variant) in variants.iter() {
+            writeln!(destination, "Self::{},", variant)?;
+        }
+        writeln!(destination, "].into_iter()")?;
+        writeln!(destination, "}} }} ")?;
+
+        std::process::Command::new("rustfmt")
+            .arg(&self.destination_file)
+            .output()?;
+
         Ok(())
     }
 }
 
-
 fn main() -> Result<(), std::io::Error> {
-
     // if any of the source files used changed, rerun generation
     for to_gen in TO_GENERATE_ENUMS.iter() {
         println!("cargo::rerun-if-changed={}", to_gen.source_file);
-
         to_gen.generate()?;
     }
 
     Ok(())
 }
-
-
-
-
-

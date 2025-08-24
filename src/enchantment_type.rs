@@ -13,9 +13,8 @@ pub enum EnchantmentType {
     Shard,
     Shrine,
 }
-
 impl std::str::FromStr for EnchantmentType {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Aura" => Ok(Self::Aura),
@@ -30,32 +29,35 @@ impl std::str::FromStr for EnchantmentType {
             "Saga" => Ok(Self::Saga),
             "Shard" => Ok(Self::Shard),
             "Shrine" => Ok(Self::Shrine),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown EnchantmentType: {}", other.to_string())),
         }
     }
 }
-
+impl EnchantmentType {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Aura => "Aura",
+            Self::Background => "Background",
+            Self::Cartouche => "Cartouche",
+            Self::Case => "Case",
+            Self::Class => "Class",
+            Self::Curse => "Curse",
+            Self::Role => "Role",
+            Self::Room => "Room",
+            Self::Rune => "Rune",
+            Self::Saga => "Saga",
+            Self::Shard => "Shard",
+            Self::Shrine => "Shrine",
+        }
+    }
+}
 impl std::fmt::Display for EnchantmentType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Aura => write!(f, "Aura"),
-            Self::Background => write!(f, "Background"),
-            Self::Cartouche => write!(f, "Cartouche"),
-            Self::Case => write!(f, "Case"),
-            Self::Class => write!(f, "Class"),
-            Self::Curse => write!(f, "Curse"),
-            Self::Role => write!(f, "Role"),
-            Self::Room => write!(f, "Room"),
-            Self::Rune => write!(f, "Rune"),
-            Self::Saga => write!(f, "Saga"),
-            Self::Shard => write!(f, "Shard"),
-            Self::Shrine => write!(f, "Shrine"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl EnchantmentType {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Aura,
             Self::Background,
@@ -69,6 +71,7 @@ impl EnchantmentType {
             Self::Saga,
             Self::Shard,
             Self::Shrine,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }

@@ -21,9 +21,8 @@ pub enum Format {
     Standard,
     Vintage,
 }
-
 impl std::str::FromStr for Format {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Alchemy" => Ok(Self::Alchemy),
@@ -46,40 +45,43 @@ impl std::str::FromStr for Format {
             "Premodern" => Ok(Self::Premodern),
             "Standard" => Ok(Self::Standard),
             "Vintage" => Ok(Self::Vintage),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown Format: {}", other.to_string())),
         }
     }
 }
-
+impl Format {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Alchemy => "Alchemy",
+            Self::Brawl => "Brawl",
+            Self::Commander => "Commander",
+            Self::Duel => "Duel",
+            Self::Explorer => "Explorer",
+            Self::Future => "Future",
+            Self::Gladiator => "Gladiator",
+            Self::Historic => "Historic",
+            Self::Historicbrawl => "HistoricBrawl",
+            Self::Legacy => "Legacy",
+            Self::Modern => "Modern",
+            Self::Oathbreaker => "Oathbreaker",
+            Self::Pauper => "Pauper",
+            Self::Paupercommander => "PauperCommander",
+            Self::Penny => "Penny",
+            Self::Pionner => "Pionner",
+            Self::Predh => "Predh",
+            Self::Premodern => "Premodern",
+            Self::Standard => "Standard",
+            Self::Vintage => "Vintage",
+        }
+    }
+}
 impl std::fmt::Display for Format {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Alchemy => write!(f, "Alchemy"),
-            Self::Brawl => write!(f, "Brawl"),
-            Self::Commander => write!(f, "Commander"),
-            Self::Duel => write!(f, "Duel"),
-            Self::Explorer => write!(f, "Explorer"),
-            Self::Future => write!(f, "Future"),
-            Self::Gladiator => write!(f, "Gladiator"),
-            Self::Historic => write!(f, "Historic"),
-            Self::Historicbrawl => write!(f, "HistoricBrawl"),
-            Self::Legacy => write!(f, "Legacy"),
-            Self::Modern => write!(f, "Modern"),
-            Self::Oathbreaker => write!(f, "Oathbreaker"),
-            Self::Pauper => write!(f, "Pauper"),
-            Self::Paupercommander => write!(f, "PauperCommander"),
-            Self::Penny => write!(f, "Penny"),
-            Self::Pionner => write!(f, "Pionner"),
-            Self::Predh => write!(f, "Predh"),
-            Self::Premodern => write!(f, "Premodern"),
-            Self::Standard => write!(f, "Standard"),
-            Self::Vintage => write!(f, "Vintage"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl Format {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Alchemy,
             Self::Brawl,
@@ -101,6 +103,7 @@ impl Format {
             Self::Premodern,
             Self::Standard,
             Self::Vintage,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }

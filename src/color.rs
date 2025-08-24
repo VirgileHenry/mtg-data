@@ -7,9 +7,8 @@ pub enum Color {
     Red,
     White,
 }
-
 impl std::str::FromStr for Color {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "black" => Ok(Self::Black),
@@ -18,26 +17,29 @@ impl std::str::FromStr for Color {
             "green" => Ok(Self::Green),
             "red" => Ok(Self::Red),
             "white" => Ok(Self::White),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown Color: {}", other.to_string())),
         }
     }
 }
-
+impl Color {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Black => "black",
+            Self::Blue => "blue",
+            Self::Colorless => "colorless",
+            Self::Green => "green",
+            Self::Red => "red",
+            Self::White => "white",
+        }
+    }
+}
 impl std::fmt::Display for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Black => write!(f, "black"),
-            Self::Blue => write!(f, "blue"),
-            Self::Colorless => write!(f, "colorless"),
-            Self::Green => write!(f, "green"),
-            Self::Red => write!(f, "red"),
-            Self::White => write!(f, "white"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl Color {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Black,
             Self::Blue,
@@ -45,6 +47,7 @@ impl Color {
             Self::Green,
             Self::Red,
             Self::White,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }

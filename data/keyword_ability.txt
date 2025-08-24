@@ -53,6 +53,7 @@ Disturb
 Doctor's companion
 Double agenda
 Double strike
+Double team
 Dredge
 Echo
 Embalm
@@ -69,6 +70,7 @@ Eternalize
 Evoke
 Evolve
 Exalted
+Exhaust
 Exploit
 Extort
 Fabricate
@@ -92,6 +94,7 @@ Fuse
 Gift
 Graft
 Gravestorm
+Harmonize
 Haste
 Haunt
 Hexproof
@@ -108,6 +111,7 @@ Intensity
 Intimidate
 Islandcycling
 Islandwalk
+Job select
 Jump-start
 Kicker
 Landcycling
@@ -118,11 +122,14 @@ Lifelink
 Living metal
 Living weapon
 Madness
+Max speed
+Mayhem
 Megamorph
 Melee
 Menace
 Mentor
 Miracle
+Mobilize
 Modular
 More Than Meets the Eye
 Morph
@@ -177,6 +184,7 @@ Splice
 Split second
 Spree
 Squad
+Station
 Storm
 Sunburst
 Surge
@@ -198,5 +206,7 @@ Unleash
 Vanishing
 Vigilance
 Ward
+Warp
+Web-slinging
 Wither
 Wizardcycling

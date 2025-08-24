@@ -21,6 +21,7 @@ Enrage
 Fateful hour
 Fathomless descent
 Ferocious
+Flurry
 Formidable
 Grandeur
 Hellbent
@@ -44,9 +45,11 @@ Parley
 Radiance
 Raid
 Rally
+Renew
 Revolt
 Secret council
 Spell mastery
+Start your engines!
 Strive
 Survival
 Sweep
@@ -56,5 +59,6 @@ Threshold
 Underdog
 Undergrowth
 Valiant
+Void
 Will of the Planeswalkers
 Will of the council

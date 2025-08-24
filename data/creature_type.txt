@@ -9,6 +9,7 @@ Archer
 Archon
 Armadillo
 Army
+Artifact
 Artificer
 Assassin
 Assembly-Worker
@@ -31,6 +32,7 @@ Beeble
 Beholder
 Berserker
 Bird
+Bison
 Blinkmoth
 Boar
 Brainiac
@@ -73,10 +75,12 @@ Dog
 Dragon
 Drake
 Dreadnought
+Drix
 Drone
 Druid
 Dryad
 Dwarf
+Echidna
 Efreet
 Egg
 Elder
@@ -117,6 +121,7 @@ Halfling
 Hamster
 Harpy
 Head
+Hedgehog
 Hellion
 Hero
 Hippo
@@ -138,6 +143,7 @@ Insect
 Jackal
 Jellyfish
 Juggernaut
+Kangaroo
 Kavu
 Kirin
 Kithkin
@@ -148,10 +154,12 @@ Kraken
 Lamia
 Lammasu
 Leech
+Lemur
 Leviathan
 Lhurgoyf
 Licid
 Lizard
+Lobster
 Manticore
 Masticore
 Mercenary
@@ -165,6 +173,7 @@ Monger
 Mongoose
 Monk
 Monkey
+Moogle
 Moonfolk
 Mount
 Mouse
@@ -211,6 +220,7 @@ Praetor
 Primarch
 Prism
 Processor
+Qu
 Rabbit
 Raccoon
 Ranger
@@ -235,6 +245,7 @@ Scion
 Scorpion
 Scout
 Sculpture
+Seal
 Serf
 Serpent
 Servo
@@ -269,6 +280,7 @@ Squirrel
 Starfish
 Surrakar
 Survivor
+Symbiote
 Synth
 Teddy
 Tentacle
@@ -290,6 +302,7 @@ Urzan
 Vampire
 Varmint
 Vedalken
+Villain
 Volver
 Wall
 Walrus

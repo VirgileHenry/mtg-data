@@ -4,43 +4,50 @@ pub enum SpellType {
     Arcane,
     Chorus,
     Lesson,
+    Omen,
     Trap,
 }
-
 impl std::str::FromStr for SpellType {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Adventure" => Ok(Self::Adventure),
             "Arcane" => Ok(Self::Arcane),
             "Chorus" => Ok(Self::Chorus),
             "Lesson" => Ok(Self::Lesson),
+            "Omen" => Ok(Self::Omen),
             "Trap" => Ok(Self::Trap),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown SpellType: {}", other.to_string())),
         }
     }
 }
-
+impl SpellType {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Adventure => "Adventure",
+            Self::Arcane => "Arcane",
+            Self::Chorus => "Chorus",
+            Self::Lesson => "Lesson",
+            Self::Omen => "Omen",
+            Self::Trap => "Trap",
+        }
+    }
+}
 impl std::fmt::Display for SpellType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Adventure => write!(f, "Adventure"),
-            Self::Arcane => write!(f, "Arcane"),
-            Self::Chorus => write!(f, "Chorus"),
-            Self::Lesson => write!(f, "Lesson"),
-            Self::Trap => write!(f, "Trap"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl SpellType {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Adventure,
             Self::Arcane,
             Self::Chorus,
             Self::Lesson,
+            Self::Omen,
             Self::Trap,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }

@@ -10,15 +10,17 @@ pub enum ArtifactType {
     Fortification,
     Gold,
     Incubator,
+    Infinity,
     Junk,
     Map,
     Powerstone,
+    Spacecraft,
+    Stone,
     Treasure,
     Vehicle,
 }
-
 impl std::str::FromStr for ArtifactType {
-    type Err = crate::ParsingError;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "Attraction" => Ok(Self::Attraction),
@@ -31,40 +33,49 @@ impl std::str::FromStr for ArtifactType {
             "Fortification" => Ok(Self::Fortification),
             "Gold" => Ok(Self::Gold),
             "Incubator" => Ok(Self::Incubator),
+            "Infinity" => Ok(Self::Infinity),
             "Junk" => Ok(Self::Junk),
             "Map" => Ok(Self::Map),
             "Powerstone" => Ok(Self::Powerstone),
+            "Spacecraft" => Ok(Self::Spacecraft),
+            "Stone" => Ok(Self::Stone),
             "Treasure" => Ok(Self::Treasure),
             "Vehicle" => Ok(Self::Vehicle),
-            _ => Err(crate::ParsingError::UnknownInput { input: s.to_string() }),
+            other => Err(format!("Unknown ArtifactType: {}", other.to_string())),
         }
     }
 }
-
+impl ArtifactType {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Self::Attraction => "Attraction",
+            Self::Blood => "Blood",
+            Self::Bobblehead => "Bobblehead",
+            Self::Clue => "Clue",
+            Self::Contraption => "Contraption",
+            Self::Equipment => "Equipment",
+            Self::Food => "Food",
+            Self::Fortification => "Fortification",
+            Self::Gold => "Gold",
+            Self::Incubator => "Incubator",
+            Self::Infinity => "Infinity",
+            Self::Junk => "Junk",
+            Self::Map => "Map",
+            Self::Powerstone => "Powerstone",
+            Self::Spacecraft => "Spacecraft",
+            Self::Stone => "Stone",
+            Self::Treasure => "Treasure",
+            Self::Vehicle => "Vehicle",
+        }
+    }
+}
 impl std::fmt::Display for ArtifactType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Attraction => write!(f, "Attraction"),
-            Self::Blood => write!(f, "Blood"),
-            Self::Bobblehead => write!(f, "Bobblehead"),
-            Self::Clue => write!(f, "Clue"),
-            Self::Contraption => write!(f, "Contraption"),
-            Self::Equipment => write!(f, "Equipment"),
-            Self::Food => write!(f, "Food"),
-            Self::Fortification => write!(f, "Fortification"),
-            Self::Gold => write!(f, "Gold"),
-            Self::Incubator => write!(f, "Incubator"),
-            Self::Junk => write!(f, "Junk"),
-            Self::Map => write!(f, "Map"),
-            Self::Powerstone => write!(f, "Powerstone"),
-            Self::Treasure => write!(f, "Treasure"),
-            Self::Vehicle => write!(f, "Vehicle"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
-
 impl ArtifactType {
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn all() -> impl Iterator<Item = Self> {
         [
             Self::Attraction,
             Self::Blood,
@@ -76,11 +87,15 @@ impl ArtifactType {
             Self::Fortification,
             Self::Gold,
             Self::Incubator,
+            Self::Infinity,
             Self::Junk,
             Self::Map,
             Self::Powerstone,
+            Self::Spacecraft,
+            Self::Stone,
             Self::Treasure,
             Self::Vehicle,
-        ].into_iter()
+        ]
+        .into_iter()
     }
 }
