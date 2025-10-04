@@ -17,18 +17,18 @@ impl std::str::FromStr for EnchantmentType {
     type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Aura" => Ok(Self::Aura),
-            "Background" => Ok(Self::Background),
-            "Cartouche" => Ok(Self::Cartouche),
-            "Case" => Ok(Self::Case),
-            "Class" => Ok(Self::Class),
-            "Curse" => Ok(Self::Curse),
-            "Role" => Ok(Self::Role),
-            "Room" => Ok(Self::Room),
-            "Rune" => Ok(Self::Rune),
-            "Saga" => Ok(Self::Saga),
-            "Shard" => Ok(Self::Shard),
-            "Shrine" => Ok(Self::Shrine),
+            "aura" => Ok(Self::Aura),
+            "background" => Ok(Self::Background),
+            "cartouche" => Ok(Self::Cartouche),
+            "case" => Ok(Self::Case),
+            "class" => Ok(Self::Class),
+            "curse" => Ok(Self::Curse),
+            "role" => Ok(Self::Role),
+            "room" => Ok(Self::Room),
+            "rune" => Ok(Self::Rune),
+            "saga" => Ok(Self::Saga),
+            "shard" => Ok(Self::Shard),
+            "shrine" => Ok(Self::Shrine),
             other => Err(format!("Unknown EnchantmentType: {}", other.to_string())),
         }
     }
@@ -36,18 +36,18 @@ impl std::str::FromStr for EnchantmentType {
 impl EnchantmentType {
     fn as_str(&self) -> &'static str {
         match self {
-            Self::Aura => "Aura",
-            Self::Background => "Background",
-            Self::Cartouche => "Cartouche",
-            Self::Case => "Case",
-            Self::Class => "Class",
-            Self::Curse => "Curse",
-            Self::Role => "Role",
-            Self::Room => "Room",
-            Self::Rune => "Rune",
-            Self::Saga => "Saga",
-            Self::Shard => "Shard",
-            Self::Shrine => "Shrine",
+            Self::Aura => "aura",
+            Self::Background => "background",
+            Self::Cartouche => "cartouche",
+            Self::Case => "case",
+            Self::Class => "class",
+            Self::Curse => "curse",
+            Self::Role => "role",
+            Self::Room => "room",
+            Self::Rune => "rune",
+            Self::Saga => "saga",
+            Self::Shard => "shard",
+            Self::Shrine => "shrine",
         }
     }
 }

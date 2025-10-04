@@ -125,7 +125,7 @@ impl<'a> ToGenerateEnum<'a> {
             .split('\n')
             .map(|line| line.trim())
             .filter(|line| !line.is_empty())
-            .map(|line| sanitize(line).map(|s| (line, s)))
+            .map(|line| sanitize(line).map(|s| (line.to_ascii_lowercase(), s)))
             .collect::<Result<Vec<_>, _>>()
             .map_err(|e| std::io::Error::other(format!("Failed to sanitize input line: {e}")))?;
 

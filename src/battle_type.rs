@@ -6,7 +6,7 @@ impl std::str::FromStr for BattleType {
     type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Siege" => Ok(Self::Siege),
+            "siege" => Ok(Self::Siege),
             other => Err(format!("Unknown BattleType: {}", other.to_string())),
         }
     }
@@ -14,7 +14,7 @@ impl std::str::FromStr for BattleType {
 impl BattleType {
     fn as_str(&self) -> &'static str {
         match self {
-            Self::Siege => "Siege",
+            Self::Siege => "siege",
         }
     }
 }

@@ -9,10 +9,10 @@ impl std::str::FromStr for Legality {
     type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Legal" => Ok(Self::Legal),
-            "NotLegal" => Ok(Self::Notlegal),
-            "Restricted" => Ok(Self::Restricted),
-            "Banned" => Ok(Self::Banned),
+            "legal" => Ok(Self::Legal),
+            "notlegal" => Ok(Self::Notlegal),
+            "restricted" => Ok(Self::Restricted),
+            "banned" => Ok(Self::Banned),
             other => Err(format!("Unknown Legality: {}", other.to_string())),
         }
     }
@@ -20,10 +20,10 @@ impl std::str::FromStr for Legality {
 impl Legality {
     fn as_str(&self) -> &'static str {
         match self {
-            Self::Legal => "Legal",
-            Self::Notlegal => "NotLegal",
-            Self::Restricted => "Restricted",
-            Self::Banned => "Banned",
+            Self::Legal => "legal",
+            Self::Notlegal => "notlegal",
+            Self::Restricted => "restricted",
+            Self::Banned => "banned",
         }
     }
 }

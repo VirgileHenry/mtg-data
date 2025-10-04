@@ -11,12 +11,12 @@ impl std::str::FromStr for SpellType {
     type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Adventure" => Ok(Self::Adventure),
-            "Arcane" => Ok(Self::Arcane),
-            "Chorus" => Ok(Self::Chorus),
-            "Lesson" => Ok(Self::Lesson),
-            "Omen" => Ok(Self::Omen),
-            "Trap" => Ok(Self::Trap),
+            "adventure" => Ok(Self::Adventure),
+            "arcane" => Ok(Self::Arcane),
+            "chorus" => Ok(Self::Chorus),
+            "lesson" => Ok(Self::Lesson),
+            "omen" => Ok(Self::Omen),
+            "trap" => Ok(Self::Trap),
             other => Err(format!("Unknown SpellType: {}", other.to_string())),
         }
     }
@@ -24,12 +24,12 @@ impl std::str::FromStr for SpellType {
 impl SpellType {
     fn as_str(&self) -> &'static str {
         match self {
-            Self::Adventure => "Adventure",
-            Self::Arcane => "Arcane",
-            Self::Chorus => "Chorus",
-            Self::Lesson => "Lesson",
-            Self::Omen => "Omen",
-            Self::Trap => "Trap",
+            Self::Adventure => "adventure",
+            Self::Arcane => "arcane",
+            Self::Chorus => "chorus",
+            Self::Lesson => "lesson",
+            Self::Omen => "omen",
+            Self::Trap => "trap",
         }
     }
 }

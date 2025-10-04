@@ -12,13 +12,13 @@ impl std::str::FromStr for Supertype {
     type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Basic" => Ok(Self::Basic),
-            "Elite" => Ok(Self::Elite),
-            "Legendary" => Ok(Self::Legendary),
-            "Ongoing" => Ok(Self::Ongoing),
-            "Snow" => Ok(Self::Snow),
-            "Token" => Ok(Self::Token),
-            "World" => Ok(Self::World),
+            "basic" => Ok(Self::Basic),
+            "elite" => Ok(Self::Elite),
+            "legendary" => Ok(Self::Legendary),
+            "ongoing" => Ok(Self::Ongoing),
+            "snow" => Ok(Self::Snow),
+            "token" => Ok(Self::Token),
+            "world" => Ok(Self::World),
             other => Err(format!("Unknown Supertype: {}", other.to_string())),
         }
     }
@@ -26,13 +26,13 @@ impl std::str::FromStr for Supertype {
 impl Supertype {
     fn as_str(&self) -> &'static str {
         match self {
-            Self::Basic => "Basic",
-            Self::Elite => "Elite",
-            Self::Legendary => "Legendary",
-            Self::Ongoing => "Ongoing",
-            Self::Snow => "Snow",
-            Self::Token => "Token",
-            Self::World => "World",
+            Self::Basic => "basic",
+            Self::Elite => "elite",
+            Self::Legendary => "legendary",
+            Self::Ongoing => "ongoing",
+            Self::Snow => "snow",
+            Self::Token => "token",
+            Self::World => "world",
         }
     }
 }

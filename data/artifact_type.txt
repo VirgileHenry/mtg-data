@@ -14,5 +14,6 @@ Map
 Powerstone
 Spacecraft
 Stone
+Terminus
 Treasure
 Vehicle

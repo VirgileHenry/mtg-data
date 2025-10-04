@@ -1,18 +1,16 @@
 # This python script will fetch the latest data on scryfall,
 # a MTG card database with a suitable API to update the various
 # files in the data/ directory.
-# 
+#
 # Those files are then used by the rust build script to generate the required enums for the game.
-# Please note that not all files are automatically fetched and generated, so it is not 
+# Please note that not all files are automatically fetched and generated, so it is not
 # recommanded to remove all the data/ folder and rerun the script.
 # Instead, simply run this python script and it will override the outdated files.
 #
 # This script shall be run every once in a while (with every new extension)
-# to keep up with the new sets. 
-
+# to keep up with the new sets.
 
 import requests
-
 
 def fetch_and_save(target_file, url):
     print("Fetching", url, "->", target_file)
@@ -26,7 +24,6 @@ def fetch_and_save(target_file, url):
         for line in lines:
             output.write(f"{line}\n")
 
-
 fetch_and_save("data/ability_word.txt",         "https://api.scryfall.com/catalog/ability-words")
 fetch_and_save("data/artifact_type.txt",        "https://api.scryfall.com/catalog/artifact-types")
 fetch_and_save("data/battle_type.txt",          "https://api.scryfall.com/catalog/battle-types")
@@ -39,4 +36,3 @@ fetch_and_save("data/land_type.txt",            "https://api.scryfall.com/catalo
 fetch_and_save("data/planeswalker_type.txt",    "https://api.scryfall.com/catalog/planeswalker-types")
 fetch_and_save("data/spell_type.txt",           "https://api.scryfall.com/catalog/spell-types")
 fetch_and_save("data/supertype.txt",            "https://api.scryfall.com/catalog/supertypes")
-
