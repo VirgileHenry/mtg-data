@@ -1,13 +1,3 @@
-use std::{fmt::Display, str::FromStr};
-
-use lazy_static::lazy_static;
-use regex::Regex;
-
-// const regex to match numbers
-lazy_static! {
-    static ref NUMBER_REGEX: Regex = Regex::new("[0-9]+").unwrap(); // ! fixme
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mana {
     X,
@@ -20,124 +10,118 @@ pub enum Mana {
     Snow,
 }
 
-/*
-VHY Todo: this whole parsing could be rewritten more nicely
-*/
+impl std::str::FromStr for Mana {
+    type Err = String;
+    fn from_str(from: &str) -> Result<Self, Self::Err> {
+        if from.starts_with('{') && from.ends_with('}') {
+            let symbols = from[1..from.len() - 1]
+                .split('/')
+                .map(ManaSymbol::parse_symbol)
+                .collect::<Vec<_>>();
+            match symbols.as_slice() {
+                [Some(ManaSymbol::X)] => Ok(Mana::X),
+                [Some(ManaSymbol::Any(num))] => Ok(Mana::Any(*num)),
+                [Some(ManaSymbol::Colored(color))] => Ok(Mana::Colored(*color)),
+                [Some(ManaSymbol::Colored(c1)), Some(ManaSymbol::Colored(c2))] => {
+                    Ok(Mana::Hybrid(*c1, *c2))
+                }
+                [Some(ManaSymbol::Any(num)), Some(ManaSymbol::Colored(color))] => {
+                    Ok(Mana::MonocoloredHybrid(*num, *color))
+                }
+                [Some(ManaSymbol::Colored(color)), Some(ManaSymbol::Phyrexian)] => {
+                    Ok(Mana::Phyrexian(*color))
+                }
+                [Some(ManaSymbol::Colored(c1)), Some(ManaSymbol::Colored(c2)), Some(ManaSymbol::Phyrexian)] => {
+                    Ok(Mana::HybridPhyrexian(*c1, *c2))
+                }
+                [Some(ManaSymbol::Snow)] => Ok(Mana::Snow),
+                _ => Err(format!("Invalid symbol combination: {symbols:?}")),
+            }
+        } else {
+            Err(format!("Mana cost shall be between curly braces"))
+        }
+    }
+}
 
-/// This help building mana costs.
-/// The only real needed thing is the partial phyrexian, to help parse phyrexian mana costs easily.
-enum ManaCostBuildingTypes {
+impl std::fmt::Display for Mana {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Mana::X => write!(f, "{{x}}"),
+            Mana::Snow => write!(f, "{{s}}"),
+            Mana::Any(n) => write!(f, "{{{n}}}"),
+            Mana::Colored(c) => write!(f, "{{{}}}", c.as_char()),
+            Mana::Hybrid(c1, c2) => write!(f, "{{{}/{}}}", c1.as_char(), c2.as_char()),
+            Mana::MonocoloredHybrid(n, c) => write!(f, "{{{n}/{}}}", c.as_char()),
+            Mana::Phyrexian(c) => write!(f, "{{{}/p}}", c.as_char()),
+            Mana::HybridPhyrexian(c1, c2) => write!(f, "{{{}/{}/p}}", c1.as_char(), c2.as_char()),
+        }
+    }
+}
+
+/// Inner type used to parse mana costs.
+enum ManaSymbol {
     X,
     Any(usize),
     Colored(crate::Color),
-    Hybrid(crate::Color, crate::Color),
-    MonocoloredHybrid(usize, crate::Color),
-    PartialPhyrexian, // only two life
-    Phyrexian(crate::Color),
-    HybridPhyrexian(crate::Color, crate::Color),
+    Phyrexian,
     Snow,
 }
 
-impl FromStr for Mana {
-    type Err = String;
-    fn from_str(from: &str) -> Result<Self, Self::Err> {
-        match Self::internal_parse_manacost(from).ok_or(format!("Unknown Mana Cost: {}", from))? {
-            ManaCostBuildingTypes::X => Ok(Mana::X),
-            ManaCostBuildingTypes::Any(n) => Ok(Mana::Any(n)),
-            ManaCostBuildingTypes::Colored(c) => Ok(Mana::Colored(c)),
-            ManaCostBuildingTypes::Hybrid(c1, c2) => Ok(Mana::Hybrid(c1, c2)),
-            ManaCostBuildingTypes::MonocoloredHybrid(n, c) => Ok(Mana::MonocoloredHybrid(n, c)),
-            ManaCostBuildingTypes::PartialPhyrexian => Err(format!("Unknown Mana Cost: {}", from)), // not a valid mana cost, only for building
-            ManaCostBuildingTypes::Phyrexian(c) => Ok(Mana::Phyrexian(c)),
-            ManaCostBuildingTypes::HybridPhyrexian(c1, c2) => Ok(Mana::HybridPhyrexian(c1, c2)),
-            ManaCostBuildingTypes::Snow => Ok(Mana::Snow),
-        }
-    }
-}
-
-impl Display for Mana {
+impl std::fmt::Debug for ManaSymbol {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Mana::X => write!(f, "{{X}}"),
-            Mana::Snow => write!(f, "{{S}}"),
-            Mana::Any(n) => write!(f, "{{{n}}}"),
-            Mana::Colored(c) => write!(f, "{{{c:?}}}"),
-            Mana::Hybrid(c1, c2) => write!(f, "{{{c1:?}/{c2:?}}}"),
-            Mana::MonocoloredHybrid(n, c) => write!(f, "{{{n}/{c:?}}}"),
-            Mana::Phyrexian(c) => write!(f, "{{{c:?}/P}}"),
-            Mana::HybridPhyrexian(c1, c2) => write!(f, "{{{c1:?}/{c2:?}/P}}"),
+            ManaSymbol::X => write!(f, "x"),
+            ManaSymbol::Any(num) => write!(f, "{num}"),
+            ManaSymbol::Colored(color) => write!(f, "{}", color.as_char()),
+            ManaSymbol::Phyrexian => write!(f, "p"),
+            ManaSymbol::Snow => write!(f, "s"),
         }
     }
 }
 
-impl Mana {
-    /// Parse a mana cost knowing we already have a phyrexian type.
-    fn internal_parse_manacost(from: &str) -> Option<ManaCostBuildingTypes> {
-        // let's do something fully recursive : find any cost option separator ("/")
-        let split_index = match from.find("/") {
-            Some(index) => index,
-            None => {
-                // no separator here, parse it as number or letter
-                return match Self::internal_parse_numbered(from) {
-                    Some(value) => Some(ManaCostBuildingTypes::Any(value)),
-                    // this only check first letter, so we may discard info here
-                    None => Self::internal_parse_single_letter(
-                        from.chars().next()?.to_ascii_uppercase(),
-                    ),
-                };
-            }
+impl ManaSymbol {
+    fn parse_symbol(input: &str) -> Option<ManaSymbol> {
+        return match input {
+            "w" => Some(ManaSymbol::Colored(crate::Color::White)),
+            "b" => Some(ManaSymbol::Colored(crate::Color::Black)),
+            "r" => Some(ManaSymbol::Colored(crate::Color::Red)),
+            "u" => Some(ManaSymbol::Colored(crate::Color::Blue)),
+            "g" => Some(ManaSymbol::Colored(crate::Color::Green)),
+            "c" => Some(ManaSymbol::Colored(crate::Color::Colorless)),
+            "x" => Some(ManaSymbol::X),
+            "s" => Some(ManaSymbol::Snow),
+            "p" => Some(ManaSymbol::Phyrexian),
+            other => Some(ManaSymbol::Any(other.parse().ok()?)),
         };
-        let (first, last) = from.split_at(split_index);
-        // remove "/" from last
-        let last = last.strip_prefix('/')?;
-        // recursive call to get the mana cost of the first and last
-        match (
-            Self::internal_parse_manacost(first)?,
-            Self::internal_parse_manacost(last)?,
-        ) {
-            // two colored mana give a hybrid mana cost
-            (ManaCostBuildingTypes::Colored(c1), ManaCostBuildingTypes::Colored(c2)) => {
-                Some(ManaCostBuildingTypes::Hybrid(c1, c2))
-            }
-            // an amount and color give monocolored hybrid mana (usually 2 and color)
-            (ManaCostBuildingTypes::Any(amount), ManaCostBuildingTypes::Colored(color))
-            | (ManaCostBuildingTypes::Colored(color), ManaCostBuildingTypes::Any(amount)) => {
-                Some(ManaCostBuildingTypes::MonocoloredHybrid(amount, color))
-            }
-            // a partial phyrexian and color gives a phyrexian
-            (ManaCostBuildingTypes::PartialPhyrexian, ManaCostBuildingTypes::Colored(color))
-            | (ManaCostBuildingTypes::Colored(color), ManaCostBuildingTypes::PartialPhyrexian) => {
-                Some(ManaCostBuildingTypes::Phyrexian(color))
-            }
-            // a phyrexian and a colored gives a hybrid phyrexian
-            (ManaCostBuildingTypes::Phyrexian(c1), ManaCostBuildingTypes::Colored(c2))
-            | (ManaCostBuildingTypes::Colored(c1), ManaCostBuildingTypes::Phyrexian(c2)) => {
-                Some(ManaCostBuildingTypes::HybridPhyrexian(c1, c2))
-            }
-            _ => None,
-        }
     }
+}
 
-    fn internal_parse_numbered(from: &str) -> Option<usize> {
-        if NUMBER_REGEX.is_match(from) {
-            from.parse().ok()
-        } else {
-            None
-        }
-    }
+#[cfg(test)]
+mod test {
+    use std::str::FromStr;
 
-    fn internal_parse_single_letter(c: char) -> Option<ManaCostBuildingTypes> {
-        return match c.to_ascii_uppercase() {
-            'W' => Some(ManaCostBuildingTypes::Colored(crate::Color::White)),
-            'B' => Some(ManaCostBuildingTypes::Colored(crate::Color::Black)),
-            'R' => Some(ManaCostBuildingTypes::Colored(crate::Color::Red)),
-            'U' => Some(ManaCostBuildingTypes::Colored(crate::Color::Blue)),
-            'G' => Some(ManaCostBuildingTypes::Colored(crate::Color::Green)),
-            'C' => Some(ManaCostBuildingTypes::Colored(crate::Color::Colorless)),
-            'X' => Some(ManaCostBuildingTypes::X),
-            'S' => Some(ManaCostBuildingTypes::Snow),
-            'P' => Some(ManaCostBuildingTypes::PartialPhyrexian),
-            _ => None, // unknown
-        };
+    use crate::Color;
+
+    use super::*;
+
+    #[test]
+    fn test_mana_cost_parsing() {
+        assert_eq!(Mana::from_str("{r}"), Ok(Mana::Colored(Color::Red)));
+        assert_eq!(Mana::from_str("{x}"), Ok(Mana::X));
+        assert_eq!(Mana::from_str("{12}"), Ok(Mana::Any(12)));
+        assert_eq!(Mana::from_str("{s}"), Ok(Mana::Snow));
+        assert_eq!(
+            Mana::from_str("{r/g}"),
+            Ok(Mana::Hybrid(Color::Red, Color::Green))
+        );
+        assert_eq!(Mana::from_str("{r/p}"), Ok(Mana::Phyrexian(Color::Red)));
+        assert_eq!(
+            Mana::from_str("{3/r}"),
+            Ok(Mana::MonocoloredHybrid(3, Color::Red))
+        );
+        assert_eq!(
+            Mana::from_str("{r/g/p}"),
+            Ok(Mana::HybridPhyrexian(Color::Red, Color::Green))
+        );
     }
 }

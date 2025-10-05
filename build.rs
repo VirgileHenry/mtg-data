@@ -31,7 +31,7 @@ struct ToGenerateEnum<'a> {
     destination_file: &'a str,
 }
 
-const TO_GENERATE_ENUMS: [ToGenerateEnum<'static>; 15] = [
+const TO_GENERATE_ENUMS: &[ToGenerateEnum<'static>] = &[
     ToGenerateEnum {
         name: "AbilityWord",
         source_file: "data/ability_word.txt",
@@ -51,11 +51,6 @@ const TO_GENERATE_ENUMS: [ToGenerateEnum<'static>; 15] = [
         name: "CardType",
         source_file: "data/card_type.txt",
         destination_file: "src/card_type.rs",
-    },
-    ToGenerateEnum {
-        name: "Color",
-        source_file: "data/color.txt",
-        destination_file: "src/color.rs",
     },
     ToGenerateEnum {
         name: "CreatureType",
